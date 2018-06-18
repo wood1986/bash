@@ -1,0 +1,8 @@
+#!/bin/bash
+
+yum install -y jq
+
+VERSION=($(curl -s https://api.github.com/repos/nodejs/node/releases | jq '.[].tag_name' | head -n 1 | tr -d \" | tr -d v | tr "." " "))
+curl --silent --location https://rpm.nodesource.com/setup_${VERSION[0]}.x | sudo bash -
+
+yum install -y nodejs

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+docker pull certbot/dns-cloudflare
+
+mkdir -p /etc/letsencrypt
+cd /etc/letsencrypt
+touch dns-cloudflare.ini
+chmod 600 dns-cloudflare.ini
+echo -n "dns_cloudflare_email: "
+read EMAIL
+echo dns_cloudflare_email=$EMAIL >> dns-cloudflare.ini
+echo -n "dns_cloudflare_api_key: "
+read API_KEY
+echo dns_cloudflare_api_key=$API_KEY >> dns-cloudflare.ini
+
+docker run -it \
+  --rm \
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  certbot/dns-cloudflare \
+    certonly \
+    --server https://acme-v02.api.letsencrypt.org/directory \
+    --dns-cloudflare \
+    --dns-cloudflare-credentials /etc/letsencrypt/dns-cloudflare.ini \
+    -d $1 \
+    -d *.$1
+
+rm -f dns-cloudflare.ini

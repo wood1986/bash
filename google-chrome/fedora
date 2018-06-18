@@ -1,0 +1,9 @@
+#!/bin/bash
+
+dnf install -y gdm @base-x gnome-terminal nautilus
+
+systemctl enable gdm.service
+systemctl set-default graphical.target
+
+sh -c 'echo -e "[google-chrome]\nname=google-chrome\nbaseurl=https://dl.google.com/linux/chrome/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\ngpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub" > /etc/yum.repos.d/google-chrome.repo'
+dnf install -y google-chrome-stable
