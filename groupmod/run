@@ -1,0 +1,7 @@
+#!/bin/bash
+
+ID=$(id -g $2)
+
+groupmod -g $1 $2
+
+find / -group $ID -exec chgrp -h foo {} \;
