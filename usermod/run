@@ -4,4 +4,4 @@ ID=$(id -u $2)
 
 usermod -u $1 $2
 
-find / -user $ID -exec chown -h foo {} \;
+find / -user $ID -exec chown -h $2 {} \;
