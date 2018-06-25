@@ -1,0 +1,25 @@
+#!/bin/sh
+
+DEV_USB_PATH=/dev/bus/usb
+UAS_IDS=()
+MODPROBE_CONF=/etc/modprobe.d/blacklist_uas.conf
+
+DEV_USB_PATH=$(readlink -f $DEV_USB_PATH)"/"
+for usb in $(find $DEV_USB_PATH -type c); do
+  if [[ $(lsusb -D $usb | grep -i "uas") ]]; then
+     IFS="/"
+     read BUS DEV <<< "${usb/$DEV_USB_PATH/}"
+     pattern="Bus $BUS Device $DEV: ID "
+     match=$(lsusb | grep $pattern)
+     match=${match/$pattern/}
+     UAS_IDS+=($(echo $match | cut -d' ' -f1))
+     unset IFS
+  fi
+done
+
+rm -rf $MODPROBE_CONF
+for id in "${UAS_IDS[@]}"; do
+  echo options usb-storage quirks=$id:u >> $MODPROBE_CONF
+done
+
+dracut --regenerate-all --force
