@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DEV_HD_PATH=/dev/sda1
+LUKS_KEY=/root/luksKey
+CRYPTTAB=/etc/crypttab
+
+dd if=/dev/urandom of=$LUKS_KEY bs=1024 count=4
+chmod 0400 $LUKS_KEY
+cryptsetup -v luksAddKey $DEV_HD_PATH $LUKS_KEY
+cat $CRYPTTAB | sed 's|none discard|$LUKS_KEY luks|g' > $CRYPTTAB
+
+dracut --force
