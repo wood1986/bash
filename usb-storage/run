@@ -2,7 +2,7 @@
 
 DEV_USB_PATH=/dev/bus/usb
 UAS_IDS=()
-USB_STORAGE=/etc/modprobe.d/usbStorage.conf
+USB_STORAGE_CONF=/etc/modprobe.d/usbStorage.conf
 
 DEV_USB_PATH=$(readlink -f $DEV_USB_PATH)"/"
 for usb in $(find $DEV_USB_PATH -type c); do
@@ -17,9 +17,9 @@ for usb in $(find $DEV_USB_PATH -type c); do
   fi
 done
 
-rm -rf $USB_STORAGE
+rm -rf $USB_STORAGE_CONF
 for id in "${UAS_IDS[@]}"; do
-  echo options usb-storage quirks=$id:u >> $USB_STORAGE
+  echo options usb-storage quirks=$id:u >> $USB_STORAGE_CONF
 done
 
 dracut --force
