@@ -18,6 +18,7 @@ docker run -it \
   -v /etc/letsencrypt:/etc/letsencrypt \
   certbot/dns-cloudflare \
     certonly \
+    --register-unsafely-without-email \
     --server https://acme-v02.api.letsencrypt.org/directory \
     --dns-cloudflare \
     --dns-cloudflare-credentials /etc/letsencrypt/dns-cloudflare.ini \

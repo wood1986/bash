@@ -1,0 +1,1 @@
+rsync --exclude=.DS_Store --exclude=Thumbs.db --progress --ignore-existing --recursive /win /home/wood
