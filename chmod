@@ -4,5 +4,5 @@ if [ -z "$1" ]; then
   exit 0
 fi
 
-find $1 -type -d -exec chmod 755 {} \
-find $1 -type -f -exec chmod 644 {} \
+find $1 -type d -exec chmod 755 {} \;
+find $1 -type f -exec chmod 644 {} \;
