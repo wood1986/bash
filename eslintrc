@@ -1,0 +1,4 @@
+#!/bin/sh
+
+curl -LO https://raw.githubusercontent.com/eslint/eslint.github.io/master/_data/rules.yml
+yaml2json rules.yml | jq '[.categories[].rules[] | select(.recommended | not) | {(.name): 2}] | add ' > .eslintrc
